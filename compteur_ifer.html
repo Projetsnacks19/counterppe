@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compteur IFER – Énergie Patriotique</title>
+  <style>
+    :root {
+      --blue:#004080;
+      --red:#c4002f;
+      --green:#008000;
+    }
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;background:#f6f8fa;color:#333;display:flex;flex-direction:column;align-items:center;gap:2rem;}
+    header{background:var(--blue);color:#fff;padding:1rem 0 1.2rem;width:100%;text-align:center;}
+    .subheader{font-size:.95rem;margin-top:.35rem;max-width:600px;margin-inline:auto;opacity:.9;line-height:1.35rem;}
+    .counter-box{background:#fff;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.12);padding:2rem;text-align:center;width:min(90%,520px);} 
+    .counter-value{font-size:2.5rem;font-weight:bold;letter-spacing:1px;}
+    .green{color:var(--green);} .red{color:var(--red);} /* utility colours */
+    .label{margin-top:.5rem;font-size:1rem;color:#555;}
+    .cards{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;width:100%;max-width:820px;}
+    .card{background:#fff;padding:1.25rem 1.5rem;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.1);flex:1 1 260px;max-width:350px;text-align:center;}
+    .card h2{color:var(--blue);margin:.2rem 0 1rem;font-size:1.2rem;}
+    .big-value{font-size:2rem;font-weight:700;}
+    .foot-note{font-size:.85rem;color:#777;}
+    ul{line-height:1.45rem;}
+    footer{font-size:.8rem;padding:1rem 0 2rem;color:#777;text-align:center;width:90%;max-width:800px;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>IFER communal en temps réel</h1>
+    <p class="subheader">IFER = <strong>Impôt forfaitaire sur les entreprises de réseaux</strong> : chaque parc <strong>éolien</strong> ou <strong>photovoltaïque</strong> verse chaque année cette taxe aux communes et intercommunalités qui les accueillent.</p>
+  </header>
+
+  <section class="counter-box">
+    <div id="iferCounter" class="counter-value green">0 €</div>
+    <div class="label">Recettes versées par les parcs éoliens &amp; solaires <strong>depuis l'origine (2007)</strong> – cumul actualisé en direct</div>
+  </section>
+
+  <section class="cards">
+    <div class="card">
+      <h2>2035 <br/>avec PPE appliquée</h2>
+      <div class="big-value green">≈&nbsp;1,1&nbsp;Md&nbsp;€ / an</div>
+      <div class="foot-note">≈&nbsp;35&nbsp;€/s supplémentaires pour nos communes</div>
+    </div>
+    <div class="card">
+      <h2>Sans PPE<br/>(si le moratoire RN&nbsp;+&nbsp;LR est voté)</h2>
+      <div class="big-value red">0&nbsp;€</div>
+      <div class="foot-note">aucune recette nouvelle, perte d’1&nbsp;Md€ potentiel</div>
+    </div>
+  </section>
+
+  <section style="width:90%;max-width:800px;">
+    <h2>Pourquoi c’est crucial&nbsp;?</h2>
+    <ul>
+      <li><strong>L'IFER supplémentaire équivaut à deux Dotations d'Équipement des Territoires Ruraux (DETR) chaque année :</strong> ces subventions de l'État financent très concrètement la rénovation d'écoles et de mairies, l'achat de minibus scolaires, la modernisation de gendarmeries ou encore l'éclairage public.</li>
+      <li><strong>Mini‑plan Marshall rural</strong> : +1 milliard&nbsp;€/an injectés dans les budgets des communes, sans nouvel impôt.</li>
+      <li><strong>Repowering local :</strong> moderniser un parc de <em>10 MW (≈ 3 éoliennes nouvelle génération)</em> génère 100 k€ d’IFER/an – assez pour passer tout l’éclairage de 10 000 habitants en LED basse conso.</li>
+      <li>Dépenses entièrement couvertes par l’investissement privé des filières éolienne & solaire : <em>zéro euro</em> de prélèvement sur le contribuable.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Sources : Barème IFER 2025 (8,51 € & 3,542 € /kW), cumul 2007‑2024 ≈ 2,9 Mds €. Objectifs PPE 3 (Min. Transition énergétique, 2025).
+  </footer>
+
+<script>
+  /* ---- Compteur IFER cumul depuis 2007 ---- */
+  const eurosPerSecond = 11.4; // flux actuel 2025 (scénario médian)
+  const baseEuros = 2900000000; // cumul estimé 2007‑2024 ≈ 2,9 Mds €
+
+  const counterEl = document.getElementById('iferCounter');
+  const startPage = Date.now();
+
+  function updateCounter(){
+    const elapsed = (Date.now() - startPage) / 1000;
+    const total = baseEuros + elapsed * eurosPerSecond;
+    counterEl.textContent = total.toLocaleString('fr-FR', {maximumFractionDigits:0}) + ' €';
+    requestAnimationFrame(updateCounter);
+  }
+  updateCounter();
+</script>
+</body>
+</html>
